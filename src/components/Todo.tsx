@@ -5,11 +5,11 @@ import TodoItems from "./TodoItems";
 
 const Todo = () => {
   const inputRef = useRef();
-  const [todoList, settodoList] = useState(
+  const [todoList, settodoList] = useState([
     localStorage.getItem("todos")
       ? JSON.parse(localStorage.getItem("todos"))
-      : ""
-  );
+      : "",
+  ]);
 
   const add = () => {
     const inputText = inputRef.current.value.trim();
