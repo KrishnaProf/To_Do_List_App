@@ -1,18 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import todo_icon from "../assets/todo_icon.png";
 
 import TodoItems from "./TodoItems";
 
 const Todo = () => {
-  const inputRef = useRef();
-  const [todoList, settodoList] = useState([
-    localStorage.getItem("todos")
-      ? JSON.parse(localStorage.getItem("todos"))
-      : "",
-  ]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [todoList, settodoList] = useState(() => {
+    try {
+      const storedTodos = localStorage.getItem("todos");
+      return storedTodos ? JSON.parse(storedTodos) : [];
+    } catch (error) {
+      // Handle the error, e.g. log it or show an error message
+      console.error(error);
+      return [];
+    }
+  });
 
   const add = () => {
-    const inputText = inputRef.current.value.trim();
+    const inputText = (inputRef.current?.value ?? "").trim();
     if (inputText) {
       const newTodo = {
         id: Date.now(),
@@ -20,21 +25,21 @@ const Todo = () => {
         isComplete: false,
       };
 
-      settodoList((prev) => [...prev, newTodo]);
-      inputRef.current.value = "";
+      settodoList((prev: any) => [...prev, newTodo]);
+      // inputRef.current = inputRef.current ?? { value: "" };
       console.log(inputText);
     }
   };
 
-  const deleteTodo = (id) => {
-    settodoList((prevTodos) => {
-      return prevTodos.filter((todo) => todo.id !== id);
+  const deleteTodo = (id: any) => {
+    settodoList((prevTodos: any) => {
+      return prevTodos.filter((todo: any) => todo.id !== id);
     });
   };
 
-  const toggleItem = (id) => {
-    settodoList((prevTodos) => {
-      return prevTodos.map((todo) => {
+  const toggleItem = (id: any) => {
+    settodoList((prevTodos: any) => {
+      return prevTodos.map((todo: any) => {
         if (todo.id === id) {
           return { ...todo, isComplete: !todo.isComplete };
         }
@@ -76,7 +81,7 @@ const Todo = () => {
       {/* Todo list  */}
 
       <div>
-        {todoList.map((item, index) => {
+        {todoList.map((item: any, index: any) => {
           return (
             <TodoItems
               key={index}
