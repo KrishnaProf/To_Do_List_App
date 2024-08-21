@@ -5,6 +5,7 @@ import TodoItems from "./TodoItems";
 
 const Todo = () => {
   const inputRef = useRef<HTMLInputElement>(null);
+
   const [todoList, settodoList] = useState(() => {
     try {
       const storedTodos = localStorage.getItem("todos");
@@ -26,7 +27,9 @@ const Todo = () => {
       };
 
       settodoList((prev: any) => [...prev, newTodo]);
-      // inputRef.current = inputRef.current ?? { value: "" };
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
       console.log(inputText);
     }
   };
